@@ -20,6 +20,12 @@ class ProductForm(forms.Form):
     average_quantity_per_month.widget.attrs['placeholder'] = 'Quantity Per Month'
 
 
+class AddNProductForm(forms.Form):
+    product_count = forms.CharField(widget=forms.TextInput)
+    
+    product_count.widget.attrs['placeholder'] = 'Add How Many Product(s)'
+    
+    
 class ProductEditForm(forms.Form):
     PRODUCT = [(-1, '---Select Product---')]
     try:
@@ -52,11 +58,17 @@ class CostOfSaleEditForm(forms.Form):
     except Exception as ex:
         products = []
     product = forms.CharField(widget=forms.Select(choices=products))
+
+
+class AddNExpenseForm(forms.Form):
+    expense_count = forms.CharField(widget=forms.TextInput)
+    
+    expense_count.widget.attrs['placeholder'] = 'How Many Expense(s)'
     
     
 class ExpenseForm(forms.Form):
     description = forms.CharField(widget=forms.TextInput)
-    is_fixed = forms.BooleanField(required=False)
+    is_fixed = forms.CharField(widget=forms.Select(choices=[(0, '---Select Expense Type---'), (1, 'Fixed'), (0, 'Not Fixed')]), initial='0', required=True)
     value = forms.DecimalField()
 
     description.widget.attrs['placeholder'] = 'Expense Description'

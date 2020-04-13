@@ -18,40 +18,57 @@
             </h3>
         </thead>
         <tbody>
-            <tr>
-                <td>{{ form.name }}</td>
-            </tr>
-            {% if action != 'edit' %}
-            <tr>
-                <td>{{ form.seasonality_type }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.seasonality_values }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.year }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.will_roll_over.label }}: {{ form.will_roll_over }} </td>
-            </tr>
+            {% if action == 'add' %}
+                <tr>
+                    <td>{{ form.year }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.seasonality_type }}</td>
+                </tr>
+            {% elif action == 'edit' %}
+                <tr><td>{{ form.year }}</td></tr>
+                <tr><td>{{ form.seasonality_type }}</td></tr>
+            {% elif action == 'update' %}
+                 <tr>
+                        <td style="padding-top: 5px; font-weight:bold">
+                            Seasonality Year: {{ year }}
+                        </td>
+                 </tr>
+                {% for index, seasonality in values %}
+                    <tr>
+                        <td style="padding-top: 5px; font-weight:bold">
+                            Month: {{ seasonality.2 }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select name="financial_year">
+                                <option value="{{ seasonality.1   }}">{{ seasonality.1 }}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr><td><input type="text" name="month" required value="{{ seasonality.2 }}" readonly/></td></tr>
+                    <tr><td><input type="text" name="percentage" required placeholder="Month {{ seasonality.2 }} Value" value="{{ seasonality.3 }}"/></td></tr>
+                    <tr><td><input type="text" name="product" required value="{{ seasonality.4 }}" readonly/></td></tr>
+                {% endfor %}
             {% endif %}
             <tr>
                 <td>
-                    <input type ='submit' value = '{% if action == "add" %} Add {% elif action == "edit" %} Edit {% else %} Update {% endif %}' id='id_add_seasonality_button'>
+                    <input type ='submit' value = '{% if action == "add" %} Create {% elif action == "edit" %} Edit {% else %} Update {% endif %}' id='id_add_rampup_button'>
                 </td>
             </tr>
             {% if action == 'add' %}
-                    <tr>
-                        <td>
-                            <a href="{% url 'seasonality:edit_seasonality' %}" >Edit Seasonality</a>
-                        </td>
-                    </tr>
-                    {% elif action == 'edit' %}
-                    <tr>
-                        <td>
-                            <a href="{% url 'seasonality:add_seasonality' %}" >Add Seasonality</a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        <a href="{% url 'seasonality:edit_seasonality' %}" >Edit Seasonality</a>
+                    </td>
+                </tr>
+                {% elif action == 'edit' %}
+                <tr>
+                    <td>
+                        <a href="{% url 'seasonality:add_seasonality' %}" >Add Seasonality</a>
+                    </td>
+                </tr>
             {% endif %}
         </tbody>
     </table>
